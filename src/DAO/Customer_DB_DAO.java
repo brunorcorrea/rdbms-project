@@ -107,4 +107,26 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
             preparedStatement.executeUpdate();
         }
     }
+
+    public void validatePrimaryKeyRange() throws SQLException {
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+
+        String query = "SELECT MAX(id) as id FROM Customer WHERE id BETWEEN ? AND ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, minPrimaryKeyValue);
+            preparedStatement.setInt(2, maxPrimaryKeyValue);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    resultSet.getInt("id");
+
+                    int nextId = resultSet.getInt("id") + 1;
+                    if(nextId > maxPrimaryKeyValue)
+                        throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!");
+                }
+        }
+    }
 }
