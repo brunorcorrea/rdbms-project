@@ -1,37 +1,32 @@
 package RDBMS;
 
-import java.util.ArrayList;
-
 import DTO.Customer;
 import DTO.Orders;
 
-public class MemoryDBConnection
-   {
-   private ArrayList<Customer> customersDB;
-   private ArrayList<Orders>   ordersDB;
+import java.util.ArrayList;
 
-   public MemoryDBConnection()
-      {
-      super();
-      customersDB = new ArrayList<>();
-      ordersDB = new ArrayList<>();
-      }
+public class MemoryDBConnection {
+    private ArrayList<Customer> customersDB;
+    private ArrayList<Orders> ordersDB;
 
-   public ArrayList<Customer> getCustomerList()
-      {
-      return (customersDB);
-      }
+    public MemoryDBConnection() {
+        super();
+        customersDB = new ArrayList<>();
+        ordersDB = new ArrayList<>();
+    }
 
-   public ArrayList<Orders> getOrderList()
-      {
-      return (ordersDB);
-      }
+    public ArrayList<Customer> getCustomerList() {
+        return (customersDB);
+    }
 
-   public void close()
-      {
-      customersDB.clear();
-      customersDB = null;
-      ordersDB.clear();
-      ordersDB = null;
-      }
-   }
+    public ArrayList<Orders> getOrderList() {
+        return (ordersDB);
+    }
+
+    public void close() {
+        customersDB.clear();
+        customersDB = null;
+        ordersDB.clear();
+        ordersDB = null;
+    }
+}

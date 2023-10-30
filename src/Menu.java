@@ -183,14 +183,9 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
             scanner.nextLine();
 
             switch (option) {
-                case 1:
-                    showHelp();
-                    break;
-                case 2:
-                    showAbout();
-                    break;
-                default:
-                    System.out.println("Opção Inválida.");
+                case 1 -> showHelp();
+                case 2 -> showAbout();
+                default -> System.out.println("Opção Inválida.");
             }
         } while (option < 1 || option > 2);
     }
