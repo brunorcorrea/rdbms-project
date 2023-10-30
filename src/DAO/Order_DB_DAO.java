@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class Order_DB_DAO extends AbstractOrderDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public Order_DB_DAO(Connection connection) {
         super();
@@ -20,6 +20,8 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
     @Override
     public List<Orders> getOrdersByCustomerId(int customerId) throws SQLException {
+        validateIfCustomerIdIsValid(customerId);
+
         List<Orders> orders = new ArrayList<>();
         String query = "SELECT * FROM Orders WHERE customerId = ?";
 
@@ -42,6 +44,8 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
     @Override
     public Orders getOrderByNumber(int orderNumber) throws SQLException {
+        validateIfOrderNumberIsValid(orderNumber);
+
         String query = "SELECT * FROM Orders WHERE number = ?";
         Orders order = null;
 
@@ -63,6 +67,8 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
     @Override
     public void addOrder(Orders order) throws SQLException {
+        validateIfCanInsertValue();
+
         String query = "INSERT INTO Orders (number, customerId, description, price) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -77,6 +83,8 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
     @Override
     public void updateOrder(Orders order) throws SQLException {
+        validateIfOrderNumberIsValid(order.getNumber());
+
         String query = "UPDATE Orders SET customerId = ?, description = ?, price = ? WHERE number = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -91,6 +99,8 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
     @Override
     public void deleteOrder(int orderNumber) throws SQLException {
+        validateIfOrderNumberIsValid(orderNumber);
+
         String query = "DELETE FROM Orders WHERE number = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -101,14 +111,35 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
     @Override
     public void deleteAllOrders() throws SQLException {
-        String query = "DELETE FROM Orders";
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+
+        String query = "DELETE FROM Orders WHERE id BETWEEN ? AND ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, minPrimaryKeyValue);
+            preparedStatement.setInt(2, maxPrimaryKeyValue);
             preparedStatement.executeUpdate();
         }
     }
 
-    public void validatePrimaryKeyRange() throws SQLException {
+    public void validateIfOrderNumberIsValid(int number) throws SQLException {
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+
+        if(number < minPrimaryKeyValue || number > maxPrimaryKeyValue)
+            throw new SQLException("O número do pedido deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
+    }
+
+    public void validateIfCustomerIdIsValid(int id) throws SQLException {
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+
+        if (id < minPrimaryKeyValue || id > maxPrimaryKeyValue)
+            throw new SQLException("O ID do cliente deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
+    }
+
+    public void validateIfCanInsertValue() throws SQLException {
         int minPrimaryKeyValue = 10 * 10_000; //group number 10
         int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
 

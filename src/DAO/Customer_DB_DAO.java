@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Customer_DB_DAO extends AbstractCustomerDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public Customer_DB_DAO(Connection connection) {
         super();
@@ -20,10 +20,14 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
     @Override
     public List<Customer> getAllCustomersOrderedByName() throws SQLException {
         List<Customer> customers = new ArrayList<>();
-        String query = "SELECT * FROM Customer ORDER BY name";
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+        String query = "SELECT * FROM Customer WHERE id BETWEEN ? AND ? ORDER BY name";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, minPrimaryKeyValue);
+            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Customer customer = new Customer();
@@ -33,13 +37,15 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
                 customer.setState(resultSet.getString("state"));
                 customers.add(customer);
             }
-        }
 
-        return customers;
+            return customers;
+        }
     }
 
     @Override
     public Customer getCustomerById(int customerId) throws SQLException {
+        validateIfIdIsValid(customerId);
+
         String query = "SELECT * FROM Customer WHERE id = ?";
         Customer customer = null;
 
@@ -61,22 +67,24 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
 
     @Override
     public void addCustomer(Customer customer) throws SQLException {
-        {
-            String query = "INSERT INTO Customer (id, name, city, state) VALUES (?, ?, ?, ?)";
+        validatePrimaryKeyRange();
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, customer.getId());
-                preparedStatement.setString(2, customer.getName());
-                preparedStatement.setString(3, customer.getCity());
-                preparedStatement.setString(4, customer.getState());
+        String query = "INSERT INTO Customer (id, name, city, state) VALUES (?, ?, ?, ?)";
 
-                preparedStatement.executeUpdate();
-            }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, customer.getId());
+            preparedStatement.setString(2, customer.getName());
+            preparedStatement.setString(3, customer.getCity());
+            preparedStatement.setString(4, customer.getState());
+
+            preparedStatement.executeUpdate();
         }
     }
 
     @Override
     public void updateCustomer(Customer customer) throws SQLException {
+        validateIfIdIsValid(customer.getId());
+
         String query = "UPDATE Customer SET name = ?, city = ?, state = ? WHERE id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -91,6 +99,8 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
 
     @Override
     public void deleteCustomer(int customerId) throws SQLException {
+        validateIfIdIsValid(customerId);
+
         String query = "DELETE FROM Customer WHERE id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -101,11 +111,23 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
 
     @Override
     public void deleteAllCustomers() throws SQLException {
-        String query = "DELETE FROM Customer";
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+        String query = "DELETE FROM Customer WHERE id BETWEEN ? AND ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, minPrimaryKeyValue);
+            preparedStatement.setInt(2, maxPrimaryKeyValue);
             preparedStatement.executeUpdate();
         }
+    }
+
+    public void validateIfIdIsValid(int id) throws SQLException {
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+
+        if (id < minPrimaryKeyValue || id > maxPrimaryKeyValue)
+            throw new SQLException("O ID do cliente deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
     }
 
     public void validatePrimaryKeyRange() throws SQLException {
@@ -120,13 +142,13 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-                if (resultSet.next()) {
-                    resultSet.getInt("id");
+            if (resultSet.next()) {
+                resultSet.getInt("id");
 
-                    int nextId = resultSet.getInt("id") + 1;
-                    if(nextId > maxPrimaryKeyValue)
-                        throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!");
-                }
+                int nextId = resultSet.getInt("id") + 1;
+                if (nextId > maxPrimaryKeyValue)
+                    throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!");
+            }
         }
     }
 }
