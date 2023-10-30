@@ -25,6 +25,20 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
     durante testes; b) limpeza dos dados, para excluir todos os registros de clientes e pedidos na faixa válida do grupo
     */
 
+    public static void clearConsole() {
+        try {
+            final String os = System.getProperty("os.name");
+
+            if (os.contains("Windows")) {
+                Runtime.getRuntime().exec("cls");
+            } else {
+                Runtime.getRuntime().exec("clear");
+            }
+        } catch (final Exception e) {
+            // TODO Handle any exceptions.
+        }
+    }
+
     private static void printDivider() {
         System.out.println("--------------------------------------------------");
     }
@@ -59,7 +73,7 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
         MariaDBConnection.PASSWORD = scanner.nextLine();
 
         System.out.println("Credenciais salvas com sucesso!");
-        printDivider();
+        clearConsole();
     }
 
     public static void showMainMenu() {
@@ -81,6 +95,8 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                 case 5 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção Inválida.");
             }
+
+            clearConsole();
         } while (option != 5);
     }
 
@@ -111,6 +127,8 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                 default:
                     System.out.println("Opção Inválida.");
             }
+
+            clearConsole();
         } while (option < 1 || option > 4);
     }
 
@@ -138,6 +156,8 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                 default:
                     System.out.println("Opção Inválida.");
             }
+
+            clearConsole();
         } while (option < 1 || option > 3);
     }
 
@@ -168,6 +188,8 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                 default:
                     System.out.println("Opção Inválida.");
             }
+
+            clearConsole();
         } while (option < 1 || option > 4);
     }
 
@@ -187,6 +209,8 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                 case 2 -> showAbout();
                 default -> System.out.println("Opção Inválida.");
             }
+
+            clearConsole();
         } while (option < 1 || option > 2);
     }
 
