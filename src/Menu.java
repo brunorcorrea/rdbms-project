@@ -45,7 +45,6 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
 
         System.out.println("Obrigado por usar o " + Info.PROJECT_NAME + " v" + Info.PROJECT_VERSION + "!");
         System.out.println("Última atualização: " + Info.PROJECT_LAST_UPDATE);
-        System.out.println(Info.PROJECT_DESCRIPTION);
         System.out.println("Autores: " + String.join(", ", Info.PROJECT_AUTHORS));
 
         printDivider();
@@ -188,7 +187,7 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                     // TODO
                     break;
                 case 2:
-                    // TODO
+                    showAbout();
                     break;
                 default:
                     System.out.println("Opção Inválida.");
@@ -196,4 +195,14 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
         } while (option < 1 || option > 2);
     }
 
+    private static void showAbout() {
+        printDivider();
+
+        System.out.println("Sobre o " + Info.PROJECT_NAME + " v" + Info.PROJECT_VERSION + ":");
+        System.out.println("\tÚltima atualização: " + Info.PROJECT_LAST_UPDATE);
+        System.out.println("\t" + Info.PROJECT_DESCRIPTION);
+        System.out.println("\tAutores: " + String.join(", ", Info.PROJECT_AUTHORS));
+
+        printDivider();
+    }
 }
