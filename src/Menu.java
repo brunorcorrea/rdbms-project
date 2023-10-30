@@ -40,6 +40,17 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
         printDivider();
     }
 
+    public static void goodbye() {
+        printDivider();
+
+        System.out.println("Obrigado por usar o " + Info.PROJECT_NAME + " v" + Info.PROJECT_VERSION + "!");
+        System.out.println("Última atualização: " + Info.PROJECT_LAST_UPDATE);
+        System.out.println(Info.PROJECT_DESCRIPTION);
+        System.out.println("Autores: " + String.join(", ", Info.PROJECT_AUTHORS));
+
+        printDivider();
+    }
+
     public static void setDatabaseCredentials() {
         System.out.println("Por favor insira as credenciais do banco de dados:");
         System.out.println("Usuário: ");
