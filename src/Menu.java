@@ -25,13 +25,31 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
     durante testes; b) limpeza dos dados, para excluir todos os registros de clientes e pedidos na faixa válida do grupo
     */
 
+    private static void printDivider() {
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void welcome() {
+        printDivider();
+
+        System.out.println("Bem-vindo ao " + Info.PROJECT_NAME + " v" + Info.PROJECT_VERSION + "!");
+        System.out.println("Última atualização: " + Info.PROJECT_LAST_UPDATE);
+        System.out.println(Info.PROJECT_DESCRIPTION);
+        System.out.println("Autores: " + String.join(", ", Info.PROJECT_AUTHORS));
+
+        printDivider();
+    }
+
     public static void setDatabaseCredentials() {
-        System.out.println("Please enter the database credentials.");
-        System.out.println("User: ");
+        System.out.println("Por favor insira as credenciais do banco de dados:");
+        System.out.println("Usuário: ");
         MariaDBConnection.USERNAME = scanner.nextLine();
 
-        System.out.println("Password: ");
+        System.out.println("Senha: ");
         MariaDBConnection.PASSWORD = scanner.nextLine();
+
+        System.out.println("Credenciais salvas com sucesso!");
+        printDivider();
     }
 
     public static void showMainMenu() {
