@@ -22,6 +22,7 @@ public class Controller {
     public Controller(DataBaseType selectedDataBase) {
         super();
         this.selectedDataBase = selectedDataBase;
+        this.openConnection();
     }
 
     public void openConnection() {
@@ -55,19 +56,26 @@ public class Controller {
     }
 
     public void insertCustomer() {
-        this.openConnection();
-
         try {
             int id = customerDAO.getNextValidId();
 
-            System.out.println("Insira o nome do cliente: ");
-            String name = scanner.nextLine().trim();
+            String name;
+            do {
+                System.out.println("Insira o nome do cliente: ");
+                name = scanner.nextLine().trim();
+            } while (name.isEmpty());
 
-            System.out.println("Insira a cidade do cliente: ");
-            String city = scanner.nextLine().trim();
+            String city;
+            do {
+                System.out.println("Insira a cidade do cliente: ");
+                city = scanner.nextLine().trim();
+            } while (city.isEmpty());
 
-            System.out.println("Insira o estado do cliente: ");
-            String state = scanner.nextLine().trim();
+            String state;
+            do {
+                System.out.println("Insira o estado do cliente: ");
+                state = scanner.nextLine().trim();
+            } while (state.isEmpty());
 
             Customer customer = new Customer(id, name, city, state);
 
@@ -76,7 +84,28 @@ public class Controller {
         } catch (SQLException e) {
             System.out.println("Erro ao inserir cliente: " + e.getMessage());
         }
+    }
 
-        this.closeConnection();
+    public void getCustomerById() {
+        try {
+            System.out.println("Insira o ID do cliente: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            Customer customer = this.customerDAO.getCustomerById(id);
+
+            if (customer != null) {
+                System.out.println("----- ----- -----");
+                System.out.println("Cliente com id " + id + " encontrado!");
+                System.out.println("* Nome: " + customer.getName());
+                System.out.println("* Cidade: " + customer.getCity());
+                System.out.println("* Estado: " + customer.getState());
+                System.out.println("----- ----- -----");
+
+            } else {
+                System.out.println("Cliente não encontrado!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao obter cliente: " + e.getMessage());
+        }
     }
 }
