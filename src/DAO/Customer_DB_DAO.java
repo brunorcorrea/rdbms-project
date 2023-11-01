@@ -67,7 +67,7 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
 
     @Override
     public void addCustomer(Customer customer) throws SQLException {
-        validatePrimaryKeyRange();
+        validateIfIdIsValid(customer.getId());
 
         String query = "INSERT INTO Customer (id, name, city, state) VALUES (?, ?, ?, ?)";
 
@@ -130,7 +130,7 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
             throw new SQLException("O ID do cliente deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
     }
 
-    public void validatePrimaryKeyRange() throws SQLException {
+    public int getNextValidId() throws SQLException {
         int minPrimaryKeyValue = 10 * 10_000; //group number 10
         int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
 
@@ -142,13 +142,20 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            if (resultSet.wasNull()) {
+                return minPrimaryKeyValue;
+            } else {
+                resultSet.next();
                 resultSet.getInt("id");
 
                 int nextId = resultSet.getInt("id") + 1;
                 if (nextId > maxPrimaryKeyValue)
-                    throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!");
+                    throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!"); //TODO change exception type
+
+                return nextId;
             }
+        } catch (SQLException e) {
+            throw new SQLException("Erro ao obter o próximo ID válido!", e);
         }
     }
 }

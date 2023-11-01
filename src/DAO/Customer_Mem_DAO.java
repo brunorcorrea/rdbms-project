@@ -71,4 +71,9 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     public void deleteAllCustomers() throws SQLException {
         databaseRef.getCustomerList().clear();
     }
+
+    @Override
+    public int getNextValidId() throws SQLException {
+        return databaseRef.getCustomerList().size() + 1;
+    }
 }

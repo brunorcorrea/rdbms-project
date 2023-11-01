@@ -1,9 +1,13 @@
 import RDBMS.MariaDBConnection;
+import controller.Controller;
 
 import java.util.List;
 import java.util.Scanner;
+import System.DataBaseType;
 
 public class Menu { //TODO treat exception when pass a string instead of an integer
+    private static final Controller controller = new Controller(DataBaseType.MEMORY); //TODO change to a polymorphic approach
+
     private static final Scanner scanner = new Scanner(System.in);
     private static final List<String> mainMenuOptions = List.of(
             "Clientes", "Pedidos", "Relatórios", "Informações", "Sair"
@@ -114,7 +118,7 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
 
             switch (option) {
                 case 1:
-                    // TODO
+                    controller.insertCustomer();
                     break;
                 case 2:
                     // TODO
