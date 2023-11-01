@@ -124,7 +124,7 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                     controller.getCustomerById();
                     break;
                 case 3:
-                    // TODO
+                    controller.getCustomersByName();
                     break;
                 case 4:
                     // TODO

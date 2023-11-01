@@ -108,4 +108,30 @@ public class Controller {
             System.out.println("Erro ao obter cliente: " + e.getMessage());
         }
     }
+
+    public void getCustomersByName() {
+        try {
+            System.out.println("Insira o nome do cliente: ");
+            String name = scanner.nextLine().trim();
+
+            var customers = customerDAO.getCustomerByName(name);
+            if (customers.isEmpty()) {
+                System.out.println("Nenhum cliente encontrado!");
+            } else {
+                System.out.println("Clientes encontrados: ");
+                System.out.println("----- ----- -----");
+                for (Customer customer : customers) {
+                    System.out.println("\n** Id " + customer.getId());
+                    System.out.println("* Nome: " + customer.getName());
+                    System.out.println("* Cidade: " + customer.getCity());
+                    System.out.println("* Estado: " + customer.getState());
+                }
+                System.out.println("----- ----- -----");
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao obter clientes: " + e.getMessage());
+        }
+    }
 }

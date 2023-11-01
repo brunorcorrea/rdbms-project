@@ -39,6 +39,20 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     }
 
     @Override
+    public List<Customer> getCustomerByName(String customerName) throws SQLException {
+        List<Customer> customers = new ArrayList<>();
+        Iterator<Customer> iterator = databaseRef.getCustomerList().iterator();
+
+        while (iterator.hasNext()) {
+            Customer customer = iterator.next();
+            if (customer.getName().equals(customerName)) {
+                customers.add(customer);
+            }
+        }
+        return customers;
+    }
+
+    @Override
     public void addCustomer(Customer customer) throws SQLException {
         databaseRef.getCustomerList().add(customer);
     }

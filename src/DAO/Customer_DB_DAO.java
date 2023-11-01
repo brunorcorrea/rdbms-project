@@ -66,6 +66,32 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
     }
 
     @Override
+    public List<Customer> getCustomerByName(String customerName) throws SQLException {
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+        String query = "SELECT * FROM Customer WHERE id BETWEEN ? AND ? AND name = ?";
+
+        var customersList = new ArrayList<Customer>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, minPrimaryKeyValue);
+            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            preparedStatement.setString(3, customerName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Customer customer = new Customer();
+                customer.setId(resultSet.getInt("id"));
+                customer.setName(resultSet.getString("name"));
+                customer.setCity(resultSet.getString("city"));
+                customer.setState(resultSet.getString("state"));
+                customersList.add(customer);
+            }
+        }
+
+        return customersList;
+    }
+
+    @Override
     public void addCustomer(Customer customer) throws SQLException {
         validateIfIdIsValid(customer.getId());
 
