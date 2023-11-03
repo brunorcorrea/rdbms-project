@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public abstract class AbstractCustomerDAO {
+    public abstract List<Customer> getAllCustomersOrderedByPropertyAndDirection(String property, String direction) throws SQLException;
+
     abstract public List<Customer> getAllCustomersOrderedByName() throws SQLException;
 
     abstract public Customer getCustomerById(int customerId) throws SQLException;

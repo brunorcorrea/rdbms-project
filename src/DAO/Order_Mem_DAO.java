@@ -5,16 +5,26 @@ import RDBMS.MemoryDBConnection;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 
 public class Order_Mem_DAO extends AbstractOrderDAO {
-    private MemoryDBConnection databaseRef;
+    private final MemoryDBConnection databaseRef;
 
     public Order_Mem_DAO(MemoryDBConnection databaseRef) {
         super();
         this.databaseRef = databaseRef;
+    }
+
+    @Override
+    public List<Orders> getAllOrdersOrderedByNumber() throws SQLException {
+        List<Orders> orders = new ArrayList<>(databaseRef.getOrderList());
+
+        orders.sort(Comparator.comparingInt(Orders::getNumber));
+
+        return orders;
     }
 
     @Override

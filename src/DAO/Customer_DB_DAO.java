@@ -18,6 +18,53 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
     }
 
     @Override
+    public List<Customer> getAllCustomersOrderedByPropertyAndDirection(String property, String direction) throws SQLException {
+        List<Customer> customers = new ArrayList<>();
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+        String query = getQuery(property, direction);
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, minPrimaryKeyValue);
+            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Customer customer = new Customer();
+                customer.setId(resultSet.getInt("id"));
+                customer.setName(resultSet.getString("name"));
+                customer.setCity(resultSet.getString("city"));
+                customer.setState(resultSet.getString("state"));
+                customers.add(customer);
+            }
+
+            return customers;
+        }
+    }
+
+    private static String getQuery(String property, String direction) throws SQLException {
+        String baseQuery = "SELECT * FROM Customer WHERE id BETWEEN ? AND ?";
+
+        if (property != null && direction != null) {
+            switch (property) {
+                case "id" -> baseQuery += " ORDER BY id";
+                case "name" -> baseQuery += " ORDER BY name";
+                case "city" -> baseQuery += " ORDER BY city";
+                case "state" -> baseQuery += " ORDER BY state";
+                default -> throw new SQLException("A propriedade " + property + " não existe!");
+            }
+
+            switch (direction) {
+                case "asc" -> baseQuery += " ASC";
+                case "desc" -> baseQuery += " DESC";
+                default -> throw new SQLException("A direção " + direction + " não existe!");
+            }
+        }
+
+        return baseQuery;
+    }
+
+    @Override
     public List<Customer> getAllCustomersOrderedByName() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         int minPrimaryKeyValue = 10 * 10_000; //group number 10

@@ -10,11 +10,51 @@ import java.util.List;
 
 
 public class Customer_Mem_DAO extends AbstractCustomerDAO {
-    private MemoryDBConnection databaseRef;
+    private final MemoryDBConnection databaseRef;
 
     public Customer_Mem_DAO(MemoryDBConnection databaseRef) {
         super();
         this.databaseRef = databaseRef;
+    }
+
+    @Override
+    public List<Customer> getAllCustomersOrderedByPropertyAndDirection(String property, String direction) throws SQLException {
+        List<Customer> customers = new ArrayList<>(databaseRef.getCustomerList());
+
+        if(property != null && direction != null) {
+            switch (property) {
+                case "id" -> customers.sort((customer1, customer2) -> {
+                    if (direction.equals("asc")) {
+                        return customer1.getId() - customer2.getId();
+                    } else {
+                        return customer2.getId() - customer1.getId();
+                    }
+                });
+                case "name" -> customers.sort((customer1, customer2) -> {
+                    if (direction.equals("asc")) {
+                        return customer1.getName().compareTo(customer2.getName());
+                    } else {
+                        return customer2.getName().compareTo(customer1.getName());
+                    }
+                });
+                case "city" -> customers.sort((customer1, customer2) -> {
+                    if (direction.equals("asc")) {
+                        return customer1.getCity().compareTo(customer2.getCity());
+                    } else {
+                        return customer2.getCity().compareTo(customer1.getCity());
+                    }
+                });
+                case "state" -> customers.sort((customer1, customer2) -> {
+                    if (direction.equals("asc")) {
+                        return customer1.getState().compareTo(customer2.getState());
+                    } else {
+                        return customer2.getState().compareTo(customer1.getState());
+                    }
+                });
+            }
+        }
+
+        return customers;
     }
 
     @Override

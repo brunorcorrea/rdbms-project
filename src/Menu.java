@@ -163,16 +163,16 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
 
             switch (option) {
                 case 1:
-                    // TODO
+                    controller.getCustomersOrderedById();
                     break;
                 case 2:
-                    // TODO
+                    controller.getCustomersOrderedByName();
                     break;
                 case 3:
-                    // TODO
+                    controller.getOrdersOrderedByNumber();
                     break;
                 case 4:
-                    // TODO
+                    controller.getOrdersOfCustomersOrderedByCustomerName();
                     break;
                 default:
                     System.out.println("Opção Inválida.");

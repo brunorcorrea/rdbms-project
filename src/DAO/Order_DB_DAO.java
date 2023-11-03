@@ -19,6 +19,31 @@ public class Order_DB_DAO extends AbstractOrderDAO {
     }
 
     @Override
+    public List<Orders> getAllOrdersOrderedByNumber() throws SQLException {
+        List<Orders> orders = new ArrayList<>();
+        int minPrimaryKeyValue = 10 * 10_000; //group number 10
+        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
+        String query = "SELECT * FROM Orders WHERE number BETWEEN ? AND ? ORDER BY number";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, minPrimaryKeyValue);
+            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Orders order = new Orders();
+                order.setNumber(resultSet.getInt("number"));
+                order.setCustomerId(resultSet.getInt("customerId"));
+                order.setDescription(resultSet.getString("description"));
+                order.setPrice(resultSet.getBigDecimal("price"));
+                orders.add(order);
+            }
+
+            return orders;
+        }
+    }
+
+    @Override
     public List<Orders> getOrdersByCustomerId(int customerId) throws SQLException {
         validateIfCustomerIdIsValid(customerId);
 
