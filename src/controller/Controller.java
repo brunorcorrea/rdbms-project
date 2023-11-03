@@ -205,4 +205,16 @@ public class Controller {
         }
 
     }
+
+    public void deleteOrder() {
+        try {
+            System.out.println("Insira o número do pedido: ");
+            int number = Integer.parseInt(scanner.nextLine().trim());
+
+            this.ordersDAO.deleteOrder(number);
+            System.out.println("Pedido deletado com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("Erro ao deletar pedido: " + e.getMessage());
+        }
+    }
 }
