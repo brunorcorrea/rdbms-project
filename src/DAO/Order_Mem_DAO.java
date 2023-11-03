@@ -90,4 +90,9 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     public void deleteAllOrders() throws SQLException {
         databaseRef.getOrderList().clear();
     }
+
+    @Override
+    public int getNextValidNumber() throws SQLException {
+        return databaseRef.getOrderList().size() + 1;
+    }
 }

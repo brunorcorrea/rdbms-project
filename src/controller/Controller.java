@@ -2,10 +2,12 @@ package controller;
 
 import DAO.*;
 import DTO.Customer;
+import DTO.Orders;
 import RDBMS.MariaDBConnection;
 import RDBMS.MemoryDBConnection;
 import System.DataBaseType;
 
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -145,6 +147,35 @@ public class Controller {
             System.out.println("Cliente deletado com sucesso!");
         } catch (SQLException e) {
             System.out.println("Erro ao deletar cliente: " + e.getMessage());
+        }
+    }
+
+    public void insertOrder() {
+        try {
+            int number = ordersDAO.getNextValidNumber();
+
+            System.out.println("Insira o ID do cliente: ");
+            int customerId = scanner.nextInt();
+
+            Customer customer = this.customerDAO.getCustomerById(customerId);
+
+            if (customer == null) {
+                System.out.println("Cliente não encontrado!");
+                return;
+            }
+
+            System.out.println("Insira a descrição do pedido: ");
+            String description = scanner.nextLine().trim();
+
+            System.out.println("Insira o preço do pedido: ");
+            double price = scanner.nextDouble();
+
+            Orders order = new Orders(number, customerId, description, BigDecimal.valueOf(price));
+
+            this.ordersDAO.addOrder(order);
+            System.out.println("Pedido inserido com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("Erro ao inserir pedido: " + e.getMessage());
         }
     }
 }

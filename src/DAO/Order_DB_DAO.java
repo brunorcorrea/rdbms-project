@@ -67,7 +67,7 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
     @Override
     public void addOrder(Orders order) throws SQLException {
-        validateIfCanInsertValue();
+        validateIfOrderNumberIsValid(order.getNumber());
 
         String query = "INSERT INTO Orders (number, customerId, description, price) VALUES (?, ?, ?, ?)";
 
@@ -151,11 +151,12 @@ public class Order_DB_DAO extends AbstractOrderDAO {
             throw new SQLException("O ID do cliente deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
     }
 
-    public void validateIfCanInsertValue() throws SQLException {
+    @Override
+    public int getNextValidNumber() throws SQLException {
         int minPrimaryKeyValue = 10 * 10_000; //group number 10
         int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
 
-        String query = "SELECT MAX(id) as id FROM Orders WHERE id BETWEEN ? AND ?";
+        String query = "SELECT MAX(id) as id FROM Orders WHERE number BETWEEN ? AND ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, minPrimaryKeyValue);
@@ -163,13 +164,20 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            if (resultSet.wasNull()) {
+                return minPrimaryKeyValue;
+            } else {
+                resultSet.next();
                 resultSet.getInt("id");
 
                 int nextId = resultSet.getInt("id") + 1;
-                if(nextId > maxPrimaryKeyValue)
-                    throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos pedidos!");
+                if (nextId > maxPrimaryKeyValue)
+                    throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!"); //TODO change exception type
+
+                return nextId;
             }
+        } catch (SQLException e) {
+            throw new SQLException("Erro ao obter o próximo ID válido!", e);
         }
     }
 }

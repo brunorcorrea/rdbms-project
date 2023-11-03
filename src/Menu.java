@@ -150,7 +150,7 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
 
             switch (option) {
                 case 1:
-                    // TODO
+                    controller.insertOrder();
                     break;
                 case 2:
                     // TODO
