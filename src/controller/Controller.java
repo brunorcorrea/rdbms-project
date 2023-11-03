@@ -178,4 +178,31 @@ public class Controller {
             System.out.println("Erro ao inserir pedido: " + e.getMessage());
         }
     }
+
+    public void getOrderByNumber() {
+        try {
+            System.out.println("Insira o número do pedido: ");
+            int number = Integer.parseInt(scanner.nextLine().trim());
+
+            Orders order = this.ordersDAO.getOrderByNumber(number);
+
+            if (order != null) {
+                Customer customer = this.customerDAO.getCustomerById(order.getCustomerId());
+
+                System.out.println("----- ----- -----");
+                System.out.println("Pedido com número " + number + " encontrado!");
+                System.out.println("* ID do Cliente: " + customer.getId());
+                System.out.println("* Nome do Cliente: " + customer.getName());
+                System.out.println("* Descrição do Pedido: " + order.getDescription());
+                System.out.println("* Preço do Pedido: " + order.getPrice());
+                System.out.println("----- ----- -----");
+
+            } else {
+                System.out.println("Pedido não encontrado!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao obter pedido: " + e.getMessage());
+        }
+
+    }
 }

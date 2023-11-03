@@ -153,7 +153,7 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                     controller.insertOrder();
                     break;
                 case 2:
-                    // TODO
+                    controller.getOrderByNumber();
                     break;
                 case 3:
                     // TODO
