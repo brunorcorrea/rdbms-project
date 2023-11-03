@@ -117,20 +117,11 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
             scanner.nextLine();
 
             switch (option) {
-                case 1:
-                    controller.insertCustomer();
-                    break;
-                case 2:
-                    controller.getCustomerById();
-                    break;
-                case 3:
-                    controller.getCustomersByName();
-                    break;
-                case 4:
-                    controller.deleteCustomer();
-                    break;
-                default:
-                    System.out.println("Opção Inválida.");
+                case 1 -> controller.insertCustomer();
+                case 2 -> controller.getCustomerById();
+                case 3 -> controller.getCustomersByName();
+                case 4 -> controller.deleteCustomer();
+                default -> System.out.println("Opção Inválida.");
             }
 
             clearConsole();
@@ -149,17 +140,10 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
             scanner.nextLine();
 
             switch (option) {
-                case 1:
-                    controller.insertOrder();
-                    break;
-                case 2:
-                    controller.getOrderByNumber();
-                    break;
-                case 3:
-                    controller.deleteOrder();
-                    break;
-                default:
-                    System.out.println("Opção Inválida.");
+                case 1 -> controller.insertOrder();
+                case 2 -> controller.getOrderByNumber();
+                case 3 -> controller.deleteOrder();
+                default -> System.out.println("Opção Inválida.");
             }
 
             clearConsole();
