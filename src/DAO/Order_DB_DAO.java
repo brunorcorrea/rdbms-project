@@ -110,6 +110,18 @@ public class Order_DB_DAO extends AbstractOrderDAO {
     }
 
     @Override
+    public void deleteOrdersByCustomerId(int customerId) throws SQLException {
+        validateIfCustomerIdIsValid(customerId);
+
+        String query = "DELETE FROM Orders WHERE customerId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, customerId);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
     public void deleteAllOrders() throws SQLException {
         int minPrimaryKeyValue = 10 * 10_000; //group number 10
         int maxPrimaryKeyValue = 10 * 10_000 + 9_999;

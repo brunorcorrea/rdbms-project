@@ -134,4 +134,17 @@ public class Controller {
             System.out.println("Erro ao obter clientes: " + e.getMessage());
         }
     }
+
+    public void deleteCustomer() {
+        try {
+            System.out.println("Insira o ID do cliente: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            this.ordersDAO.deleteOrdersByCustomerId(id);
+            this.customerDAO.deleteCustomer(id);
+            System.out.println("Cliente deletado com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("Erro ao deletar cliente: " + e.getMessage());
+        }
+    }
 }

@@ -75,6 +75,18 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     }
 
     @Override
+    public void deleteOrdersByCustomerId(int customerId) throws SQLException {
+        ArrayList<Orders> orders = databaseRef.getOrderList();
+
+        for (int index = 0; index < orders.size(); index++) {
+            if (orders.get(index).getCustomerId() == customerId) {
+                orders.remove(index);
+                break;
+            }
+        }
+    }
+
+    @Override
     public void deleteAllOrders() throws SQLException {
         databaseRef.getOrderList().clear();
     }

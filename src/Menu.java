@@ -127,7 +127,7 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
                     controller.getCustomersByName();
                     break;
                 case 4:
-                    // TODO
+                    controller.deleteCustomer();
                     break;
                 default:
                     System.out.println("Opção Inválida.");
