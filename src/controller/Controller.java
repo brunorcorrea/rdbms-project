@@ -164,8 +164,12 @@ public class Controller {
                 return;
             }
 
-            System.out.println("Insira a descrição do pedido: ");
-            String description = scanner.nextLine().trim();
+            String description;
+            do {
+                System.out.println("Insira a descrição do pedido: ");
+                description = scanner.nextLine().trim();
+            } while (description.isEmpty());
+
 
             System.out.println("Insira o preço do pedido: ");
             double price = scanner.nextDouble();
@@ -203,7 +207,6 @@ public class Controller {
         } catch (SQLException e) {
             System.out.println("Erro ao obter pedido: " + e.getMessage());
         }
-
     }
 
     public void deleteOrder() {
@@ -228,7 +231,7 @@ public class Controller {
                 System.out.println("----- ----- -----");
                 for (Customer customer : customers) {
                     System.out.println("-----");
-                    System.out.println("\n** Id " + customer.getId());
+                    System.out.println("* Id " + customer.getId());
                     System.out.println("* Nome: " + customer.getName());
                     System.out.println("* Cidade: " + customer.getCity());
                     System.out.println("* Estado: " + customer.getState());
@@ -251,7 +254,7 @@ public class Controller {
                 System.out.println("----- ----- -----");
                 for (Customer customer : customers) {
                     System.out.println("-----");
-                    System.out.println("\n** Id " + customer.getId());
+                    System.out.println("* Id " + customer.getId());
                     System.out.println("* Nome: " + customer.getName());
                     System.out.println("* Cidade: " + customer.getCity());
                     System.out.println("* Estado: " + customer.getState());
@@ -274,7 +277,7 @@ public class Controller {
                 System.out.println("----- ----- -----");
                 for (Orders order : orders) {
                     System.out.println("-----");
-                    System.out.println("\n** Número " + order.getNumber());
+                    System.out.println("* Número " + order.getNumber());
                     System.out.println("* ID do Cliente: " + order.getCustomerId());
                     System.out.println("* Descrição do Pedido: " + order.getDescription());
                     System.out.println("* Preço do Pedido: " + order.getPrice());
@@ -297,7 +300,7 @@ public class Controller {
                 System.out.println("----- ----- -----");
                 for (Customer customer : customers) {
                     System.out.println("-----");
-                    System.out.println("\n** Id " + customer.getId());
+                    System.out.println("* Id " + customer.getId());
                     System.out.println("* Nome: " + customer.getName());
                     System.out.println("* Cidade: " + customer.getCity());
                     System.out.println("* Estado: " + customer.getState());
@@ -311,7 +314,7 @@ public class Controller {
                         System.out.println("----- ----- -----");
                         for (Orders order : orders) {
                             System.out.println("-----");
-                            System.out.println("\n** Número " + order.getNumber());
+                            System.out.println("** Número " + order.getNumber());
                             System.out.println("* ID do Cliente: " + order.getCustomerId());
                             System.out.println("* Descrição do Pedido: " + order.getDescription());
                             System.out.println("* Preço do Pedido: " + order.getPrice());
