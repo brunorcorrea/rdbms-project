@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static model.Info.MAX_PRIMARY_KEY_VALUE;
+import static model.Info.MIN_PRIMARY_KEY_VALUE;
+
 
 public class Order_DB_DAO extends AbstractOrderDAO {
     private final Connection connection;
@@ -21,13 +24,11 @@ public class Order_DB_DAO extends AbstractOrderDAO {
     @Override
     public List<Orders> getAllOrdersOrderedByNumber() throws SQLException {
         List<Orders> orders = new ArrayList<>();
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
         String query = "SELECT * FROM Orders WHERE number BETWEEN ? AND ? ORDER BY number";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, minPrimaryKeyValue);
-            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            preparedStatement.setInt(1, MIN_PRIMARY_KEY_VALUE);
+            preparedStatement.setInt(2, MAX_PRIMARY_KEY_VALUE);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -131,42 +132,33 @@ public class Order_DB_DAO extends AbstractOrderDAO {
     }
 
     public void validateIfOrderNumberIsValid(int number) throws SQLException {
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
-
-        if (number < minPrimaryKeyValue || number > maxPrimaryKeyValue)
-            throw new SQLException("O número do pedido deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
+        if (number < MIN_PRIMARY_KEY_VALUE || number > MAX_PRIMARY_KEY_VALUE)
+            throw new SQLException("O número do pedido deve estar entre " + MIN_PRIMARY_KEY_VALUE + " e " + MAX_PRIMARY_KEY_VALUE + "!");
     }
 
     public void validateIfCustomerIdIsValid(int id) throws SQLException {
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
-
-        if (id < minPrimaryKeyValue || id > maxPrimaryKeyValue)
-            throw new SQLException("O ID do cliente deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
+        if (id < MIN_PRIMARY_KEY_VALUE || id > MAX_PRIMARY_KEY_VALUE)
+            throw new SQLException("O ID do cliente deve estar entre " + MIN_PRIMARY_KEY_VALUE + " e " + MAX_PRIMARY_KEY_VALUE + "!");
     }
 
     @Override
     public int getNextValidNumber() throws SQLException {
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
-
         String query = "SELECT MAX(id) as id FROM Orders WHERE number BETWEEN ? AND ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, minPrimaryKeyValue);
-            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            preparedStatement.setInt(1, MIN_PRIMARY_KEY_VALUE);
+            preparedStatement.setInt(2, MAX_PRIMARY_KEY_VALUE);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.wasNull()) {
-                return minPrimaryKeyValue;
+                return MIN_PRIMARY_KEY_VALUE;
             } else {
                 resultSet.next();
                 resultSet.getInt("id");
 
                 int nextId = resultSet.getInt("id") + 1;
-                if (nextId > maxPrimaryKeyValue)
+                if (nextId > MAX_PRIMARY_KEY_VALUE)
                     throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!");
 
                 return nextId;

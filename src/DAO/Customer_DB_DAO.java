@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static model.Info.MAX_PRIMARY_KEY_VALUE;
+import static model.Info.MIN_PRIMARY_KEY_VALUE;
+
 public class Customer_DB_DAO extends AbstractCustomerDAO {
     private final Connection connection;
 
@@ -20,13 +23,11 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
     @Override
     public List<Customer> getAllCustomersOrderedByPropertyAndDirection(String property, String direction) throws SQLException {
         List<Customer> customers = new ArrayList<>();
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
         String query = getQuery(property, direction);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, minPrimaryKeyValue);
-            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            preparedStatement.setInt(1, MIN_PRIMARY_KEY_VALUE);
+            preparedStatement.setInt(2, MAX_PRIMARY_KEY_VALUE);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -89,14 +90,12 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
 
     @Override
     public List<Customer> getCustomerByName(String customerName) throws SQLException {
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
         String query = "SELECT * FROM Customer WHERE id BETWEEN ? AND ? AND name = ?";
 
         var customersList = new ArrayList<Customer>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, minPrimaryKeyValue);
-            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            preparedStatement.setInt(1, MIN_PRIMARY_KEY_VALUE);
+            preparedStatement.setInt(2, MAX_PRIMARY_KEY_VALUE);
             preparedStatement.setString(3, customerName);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -142,33 +141,27 @@ public class Customer_DB_DAO extends AbstractCustomerDAO {
     }
 
     public void validateIfIdIsValid(int id) throws SQLException {
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
-
-        if (id < minPrimaryKeyValue || id > maxPrimaryKeyValue)
-            throw new SQLException("O ID do cliente deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
+        if (id < MIN_PRIMARY_KEY_VALUE || id > MAX_PRIMARY_KEY_VALUE)
+            throw new SQLException("O ID do cliente deve estar entre " + MIN_PRIMARY_KEY_VALUE + " e " + MAX_PRIMARY_KEY_VALUE + "!");
     }
 
     public int getNextValidId() throws SQLException {
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
-
         String query = "SELECT MAX(id) as id FROM Customer WHERE id BETWEEN ? AND ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, minPrimaryKeyValue);
-            preparedStatement.setInt(2, maxPrimaryKeyValue);
+            preparedStatement.setInt(1, MIN_PRIMARY_KEY_VALUE);
+            preparedStatement.setInt(2, MAX_PRIMARY_KEY_VALUE);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.wasNull()) {
-                return minPrimaryKeyValue;
+                return MIN_PRIMARY_KEY_VALUE;
             } else {
                 resultSet.next();
                 resultSet.getInt("id");
 
                 int nextId = resultSet.getInt("id") + 1;
-                if (nextId > maxPrimaryKeyValue)
+                if (nextId > MAX_PRIMARY_KEY_VALUE)
                     throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!");
 
                 return nextId;

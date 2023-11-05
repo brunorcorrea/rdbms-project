@@ -3,6 +3,8 @@ package model;
 import java.util.List;
 
 public abstract class Info {
+    public static final Integer MIN_PRIMARY_KEY_VALUE = 10 * 10_000;
+    public static final Integer MAX_PRIMARY_KEY_VALUE = 10 * 10_000 + 9_999;
     public static final String PROJECT_NAME = "RDBMS Grupo 10 - MariaDB - POO II";
     public static final String PROJECT_VERSION = "1.0.0";
     public static final String PROJECT_LAST_UPDATE = "05/11/2023";
