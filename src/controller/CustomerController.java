@@ -98,6 +98,12 @@ public class CustomerController {
         try {
             int id = getCustomerId();
 
+            Customer customer = customerDAO.getCustomerById(id);
+            if (customer == null) {
+                System.out.println("Cliente não encontrado!");
+                return;
+            }
+
             ordersDAO.deleteOrdersByCustomerId(id);
             customerDAO.deleteCustomer(id);
             System.out.println("Cliente deletado com sucesso!");

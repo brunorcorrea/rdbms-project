@@ -95,6 +95,12 @@ public class OrderController {
         try {
             int number = getOrderNumber();
 
+            Orders order = ordersDAO.getOrderByNumber(number);
+            if (order == null) {
+                System.out.println("Pedido não encontrado!");
+                return;
+            }
+
             ordersDAO.deleteOrder(number);
             System.out.println("Pedido deletado com sucesso!");
         } catch (InvalidOrderNumberException ion) {
