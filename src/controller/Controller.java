@@ -29,19 +29,17 @@ public class Controller {
 
     public void openConnection() {
         switch (selectedDataBase) {
-            case MEMORY: {
+            case MEMORY -> {
                 memoryDBConnection = new MemoryDBConnection();
                 this.customerDAO = new Customer_Mem_DAO(memoryDBConnection);
                 this.ordersDAO = new Order_Mem_DAO(memoryDBConnection);
             }
-            break;
-            case MARIADB: {
+            case MARIADB -> {
                 myDBConnection = new MariaDBConnection();
                 this.customerDAO = new Customer_DB_DAO(myDBConnection.getConnection());
                 this.ordersDAO = new Order_DB_DAO(myDBConnection.getConnection());
             }
-            break;
-            default: {
+            default -> {
                 System.out.println("O banco de dados selecionado não é suportado.");
                 throw new InvalidParameterException("Seletor não especificado: " + selectedDataBase);
             }
