@@ -58,13 +58,6 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     }
 
     @Override
-    public List<Customer> getAllCustomersOrderedByName() throws SQLException {
-        List<Customer> customers = new ArrayList<>();
-        customers.addAll(databaseRef.getCustomerList());
-        return customers;
-    }
-
-    @Override
     public Customer getCustomerById(int customerId) throws SQLException {
         Customer customer = null;
         Iterator<Customer> iterator = databaseRef.getCustomerList().iterator();
@@ -98,18 +91,6 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     }
 
     @Override
-    public void updateCustomer(Customer customer) throws SQLException {
-        ArrayList<Customer> customers = databaseRef.getCustomerList();
-
-        for (int index = 0; index < customers.size(); index++) {
-            if (customers.get(index).getId() == customer.getId()) {
-                customers.set(index, customer);
-                break;
-            }
-        }
-    }
-
-    @Override
     public void deleteCustomer(int customerId) throws SQLException {
         ArrayList<Customer> customers = databaseRef.getCustomerList();
 
@@ -119,11 +100,6 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
                 break;
             }
         }
-    }
-
-    @Override
-    public void deleteAllCustomers() throws SQLException {
-        databaseRef.getCustomerList().clear();
     }
 
     @Override

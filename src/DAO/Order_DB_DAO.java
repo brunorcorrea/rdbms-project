@@ -107,22 +107,6 @@ public class Order_DB_DAO extends AbstractOrderDAO {
     }
 
     @Override
-    public void updateOrder(Orders order) throws SQLException {
-        validateIfOrderNumberIsValid(order.getNumber());
-
-        String query = "UPDATE Orders SET customerId = ?, description = ?, price = ? WHERE number = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, order.getCustomerId());
-            preparedStatement.setString(2, order.getDescription());
-            preparedStatement.setBigDecimal(3, order.getPrice());
-            preparedStatement.setInt(4, order.getNumber());
-
-            preparedStatement.executeUpdate();
-        }
-    }
-
-    @Override
     public void deleteOrder(int orderNumber) throws SQLException {
         validateIfOrderNumberIsValid(orderNumber);
 
@@ -142,20 +126,6 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, customerId);
-            preparedStatement.executeUpdate();
-        }
-    }
-
-    @Override
-    public void deleteAllOrders() throws SQLException {
-        int minPrimaryKeyValue = 10 * 10_000; //group number 10
-        int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
-
-        String query = "DELETE FROM Orders WHERE id BETWEEN ? AND ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, minPrimaryKeyValue);
-            preparedStatement.setInt(2, maxPrimaryKeyValue);
             preparedStatement.executeUpdate();
         }
     }
@@ -197,7 +167,7 @@ public class Order_DB_DAO extends AbstractOrderDAO {
 
                 int nextId = resultSet.getInt("id") + 1;
                 if (nextId > maxPrimaryKeyValue)
-                    throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!"); //TODO change exception type
+                    throw new SQLException("O banco de dados está cheio e não pode mais armazenar novos clientes!");
 
                 return nextId;
             }

@@ -61,18 +61,6 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     }
 
     @Override
-    public void updateOrder(Orders order) throws SQLException {
-        ArrayList<Orders> orders = databaseRef.getOrderList();
-
-        for (int index = 0; index < orders.size(); index++) {
-            if (orders.get(index).getNumber() == order.getNumber()) {
-                orders.set(index, order);
-                break;
-            }
-        }
-    }
-
-    @Override
     public void deleteOrder(int orderNumber) throws SQLException {
         ArrayList<Orders> orders = databaseRef.getOrderList();
 
@@ -94,11 +82,6 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
                 break;
             }
         }
-    }
-
-    @Override
-    public void deleteAllOrders() throws SQLException {
-        databaseRef.getOrderList().clear();
     }
 
     @Override
