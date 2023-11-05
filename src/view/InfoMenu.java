@@ -42,9 +42,10 @@ public class InfoMenu {
         System.out.println("Obrigado por usar o " + Info.PROJECT_NAME + " v" + Info.PROJECT_VERSION + "!");
         System.out.println("Última atualização: " + Info.PROJECT_LAST_UPDATE);
         System.out.println("Autores: " + String.join(", ", Info.PROJECT_AUTHORS));
-        System.out.println("Programa encerrado com sucesso!");
 
         printDivider();
+
+        System.out.println("Programa encerrado com sucesso!");
     }
 
     private static void showHelp() {
