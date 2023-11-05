@@ -331,7 +331,6 @@ public class Controller {
                         System.out.println("----- ----- -----");
                     }
                 }
-                System.out.println("----- ----- -----");
             }
         } catch (SQLException e) {
             System.out.println("Erro ao obter relatório de pedidos ordenados pelo nome do cliente: " + e.getMessage());
