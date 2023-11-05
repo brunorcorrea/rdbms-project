@@ -1,9 +1,11 @@
 import RDBMS.DataBaseType;
 import controller.Controller;
+import view.InfoMenu;
+import view.Menu;
 
 public class Main {
     public static void main(String[] args) {
-        Menu.welcome();
+        InfoMenu.welcome();
 
         if (isDevelopmentProfile(args)) {
             Menu.controller = new Controller(DataBaseType.MEMORY);
@@ -14,7 +16,7 @@ public class Main {
 
         Menu.showMainMenu();
 
-        Menu.goodbye();
+        InfoMenu.goodbye();
     }
 
     private static boolean isDevelopmentProfile(String[] args) {

@@ -22,12 +22,12 @@ public final class MariaDBConnection {
         try {
             connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
             if (connection != null) {
-                System.out.println("Database connection successful!");
+                System.out.println("Conexão com o banco de dados estabelecida com sucesso!");
             } else {
-                System.out.println("Failed to connect to the database.");
+                System.out.println("Conexão com o banco de dados falhou!");
             }
         } catch (SQLException e) {
-            System.err.println("Database connection error: " + e.getMessage());
+            System.err.println("Erro ao se conectar com o banco: " + e.getMessage());
         }
     }
 
@@ -37,7 +37,7 @@ public final class MariaDBConnection {
                 connection.close();
             }
         } catch (SQLException e) {
-            System.err.println("Error closing database connection: " + e.getMessage());
+            System.err.println("Erro ao fechar a conexão com o banco: " + e.getMessage());
         }
     }
 }

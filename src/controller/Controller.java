@@ -6,10 +6,13 @@ import DTO.Orders;
 import RDBMS.DataBaseType;
 import RDBMS.MariaDBConnection;
 import RDBMS.MemoryDBConnection;
+import exception.InvalidCustomerIdException;
+import exception.InvalidOrderNumberException;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Controller {
@@ -89,7 +92,7 @@ public class Controller {
     public void getCustomerById() {
         try {
             System.out.println("Insira o ID do cliente: ");
-            int id = Integer.parseInt(scanner.nextLine().trim());
+            int id = getCustomerId();
 
             Customer customer = this.customerDAO.getCustomerById(id);
 
@@ -104,6 +107,8 @@ public class Controller {
             } else {
                 System.out.println("Cliente não encontrado!");
             }
+        } catch (InvalidCustomerIdException icd) {
+            System.out.println("ID do cliente inválido!");
         } catch (SQLException e) {
             System.out.println("Erro ao obter cliente: " + e.getMessage());
         }
@@ -137,12 +142,13 @@ public class Controller {
 
     public void deleteCustomer() {
         try {
-            System.out.println("Insira o ID do cliente: ");
-            int id = Integer.parseInt(scanner.nextLine().trim());
+            int id = getCustomerId();
 
             this.ordersDAO.deleteOrdersByCustomerId(id);
             this.customerDAO.deleteCustomer(id);
             System.out.println("Cliente deletado com sucesso!");
+        } catch (InvalidCustomerIdException icd) {
+            System.out.println("ID do cliente inválido!");
         } catch (SQLException e) {
             System.out.println("Erro ao deletar cliente: " + e.getMessage());
         }
@@ -152,8 +158,7 @@ public class Controller {
         try {
             int number = ordersDAO.getNextValidNumber();
 
-            System.out.println("Insira o ID do cliente: ");
-            int customerId = scanner.nextInt();
+            int customerId = getCustomerId();
 
             Customer customer = this.customerDAO.getCustomerById(customerId);
 
@@ -170,12 +175,15 @@ public class Controller {
 
 
             System.out.println("Insira o preço do pedido: ");
-            double price = scanner.nextDouble();
-
-            Orders order = new Orders(number, customerId, description, BigDecimal.valueOf(price));
-
+            BigDecimal price = scanner.nextBigDecimal();
+            Orders order = new Orders(number, customerId, description, price);
             this.ordersDAO.addOrder(order);
+
             System.out.println("Pedido inserido com sucesso!");
+        } catch (InvalidCustomerIdException icd) {
+            System.out.println("ID do cliente inválido!");
+        } catch (InputMismatchException iem) {
+            System.out.println("Preço do pedido inválido!");
         } catch (SQLException e) {
             System.out.println("Erro ao inserir pedido: " + e.getMessage());
         }
@@ -183,8 +191,7 @@ public class Controller {
 
     public void getOrderByNumber() {
         try {
-            System.out.println("Insira o número do pedido: ");
-            int number = Integer.parseInt(scanner.nextLine().trim());
+            int number = getOrderNumber();
 
             Orders order = this.ordersDAO.getOrderByNumber(number);
 
@@ -202,6 +209,8 @@ public class Controller {
             } else {
                 System.out.println("Pedido não encontrado!");
             }
+        } catch (InvalidOrderNumberException ion) {
+            System.out.println("Número do pedido inválido!");
         } catch (SQLException e) {
             System.out.println("Erro ao obter pedido: " + e.getMessage());
         }
@@ -209,11 +218,12 @@ public class Controller {
 
     public void deleteOrder() {
         try {
-            System.out.println("Insira o número do pedido: ");
-            int number = Integer.parseInt(scanner.nextLine().trim());
+            int number = getOrderNumber();
 
             this.ordersDAO.deleteOrder(number);
             System.out.println("Pedido deletado com sucesso!");
+        } catch (InvalidOrderNumberException ion) {
+            System.out.println("Número do pedido inválido!");
         } catch (SQLException e) {
             System.out.println("Erro ao deletar pedido: " + e.getMessage());
         }
@@ -325,6 +335,30 @@ public class Controller {
             }
         } catch (SQLException e) {
             System.out.println("Erro ao obter relatório de pedidos ordenados pelo nome do cliente: " + e.getMessage());
+        }
+    }
+
+    private static int getOrderNumber() throws InvalidOrderNumberException {
+        try {
+            System.out.println("Insira o número do pedido: ");
+            int number = scanner.nextInt();
+            scanner.nextLine();
+
+            return number;
+        } catch (InputMismatchException iem) {
+            throw new InvalidOrderNumberException("Número do pedido inválido!");
+        }
+    }
+
+    private static int getCustomerId() throws InvalidCustomerIdException {
+        try {
+            System.out.println("Insira o ID do cliente: ");
+            int customerId = scanner.nextInt();
+            scanner.nextLine();
+
+            return customerId;
+        } catch (InputMismatchException iem) {
+            throw new InvalidCustomerIdException("ID do cliente inválido!");
         }
     }
 }
