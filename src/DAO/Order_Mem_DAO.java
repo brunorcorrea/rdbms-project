@@ -3,10 +3,8 @@ package DAO;
 import DTO.Orders;
 import RDBMS.MemoryDBConnection;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -19,7 +17,7 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     }
 
     @Override
-    public List<Orders> getAllOrdersOrderedByNumber() throws SQLException {
+    public List<Orders> getAllOrdersOrderedByNumber() {
         List<Orders> orders = new ArrayList<>(databaseRef.getOrderList());
 
         orders.sort(Comparator.comparingInt(Orders::getNumber));
@@ -28,12 +26,10 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     }
 
     @Override
-    public List<Orders> getOrdersByCustomerId(int customerId) throws SQLException {
+    public List<Orders> getOrdersByCustomerId(int customerId) {
         List<Orders> orders = new ArrayList<>();
-        Iterator<Orders> iterator = databaseRef.getOrderList().iterator();
 
-        while (iterator.hasNext()) {
-            Orders buffer = iterator.next();
+        for (Orders buffer : databaseRef.getOrderList()) {
             if (buffer.getCustomerId() == customerId) {
                 orders.add(buffer);
             }
@@ -42,12 +38,10 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     }
 
     @Override
-    public Orders getOrderByNumber(int orderNumber) throws SQLException {
+    public Orders getOrderByNumber(int orderNumber) {
         Orders order = null;
-        Iterator<Orders> iterator = databaseRef.getOrderList().iterator();
 
-        while (iterator.hasNext()) {
-            Orders buffer = iterator.next();
+        for (Orders buffer : databaseRef.getOrderList()) {
             if (buffer.getNumber() == orderNumber) {
                 order = buffer;
             }
@@ -56,12 +50,12 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     }
 
     @Override
-    public void addOrder(Orders order) throws SQLException {
+    public void addOrder(Orders order) {
         databaseRef.getOrderList().add(order);
     }
 
     @Override
-    public void deleteOrder(int orderNumber) throws SQLException {
+    public void deleteOrder(int orderNumber) {
         ArrayList<Orders> orders = databaseRef.getOrderList();
 
         for (int index = 0; index < orders.size(); index++) {
@@ -73,7 +67,7 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     }
 
     @Override
-    public void deleteOrdersByCustomerId(int customerId) throws SQLException {
+    public void deleteOrdersByCustomerId(int customerId) {
         ArrayList<Orders> orders = databaseRef.getOrderList();
 
         for (int index = 0; index < orders.size(); index++) {
@@ -85,7 +79,7 @@ public class Order_Mem_DAO extends AbstractOrderDAO {
     }
 
     @Override
-    public int getNextValidNumber() throws SQLException {
+    public int getNextValidNumber() {
         return databaseRef.getOrderList().size() + 1;
     }
 }

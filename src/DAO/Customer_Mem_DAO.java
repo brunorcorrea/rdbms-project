@@ -3,9 +3,7 @@ package DAO;
 import DTO.Customer;
 import RDBMS.MemoryDBConnection;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -18,7 +16,7 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     }
 
     @Override
-    public List<Customer> getAllCustomersOrderedByPropertyAndDirection(String property, String direction) throws SQLException {
+    public List<Customer> getAllCustomersOrderedByPropertyAndDirection(String property, String direction) {
         List<Customer> customers = new ArrayList<>(databaseRef.getCustomerList());
 
         if (property != null && direction != null) {
@@ -58,12 +56,10 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     }
 
     @Override
-    public Customer getCustomerById(int customerId) throws SQLException {
+    public Customer getCustomerById(int customerId) {
         Customer customer = null;
-        Iterator<Customer> iterator = databaseRef.getCustomerList().iterator();
 
-        while (iterator.hasNext()) {
-            Customer buffer = iterator.next();
+        for (Customer buffer : databaseRef.getCustomerList()) {
             if (buffer.getId() == customerId) {
                 customer = buffer;
             }
@@ -72,12 +68,10 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     }
 
     @Override
-    public List<Customer> getCustomerByName(String customerName) throws SQLException {
+    public List<Customer> getCustomerByName(String customerName) {
         List<Customer> customers = new ArrayList<>();
-        Iterator<Customer> iterator = databaseRef.getCustomerList().iterator();
 
-        while (iterator.hasNext()) {
-            Customer customer = iterator.next();
+        for (Customer customer : databaseRef.getCustomerList()) {
             if (customer.getName().equals(customerName)) {
                 customers.add(customer);
             }
@@ -86,12 +80,12 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     }
 
     @Override
-    public void addCustomer(Customer customer) throws SQLException {
+    public void addCustomer(Customer customer) {
         databaseRef.getCustomerList().add(customer);
     }
 
     @Override
-    public void deleteCustomer(int customerId) throws SQLException {
+    public void deleteCustomer(int customerId) {
         ArrayList<Customer> customers = databaseRef.getCustomerList();
 
         for (int index = 0; index < customers.size(); index++) {
@@ -103,7 +97,7 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     }
 
     @Override
-    public int getNextValidId() throws SQLException {
+    public int getNextValidId() {
         return databaseRef.getCustomerList().size() + 1;
     }
 }
