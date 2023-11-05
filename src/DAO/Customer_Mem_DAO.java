@@ -21,7 +21,7 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO {
     public List<Customer> getAllCustomersOrderedByPropertyAndDirection(String property, String direction) throws SQLException {
         List<Customer> customers = new ArrayList<>(databaseRef.getCustomerList());
 
-        if(property != null && direction != null) {
+        if (property != null && direction != null) {
             switch (property) {
                 case "id" -> customers.sort((customer1, customer2) -> {
                     if (direction.equalsIgnoreCase("asc")) {

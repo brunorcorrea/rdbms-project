@@ -164,7 +164,7 @@ public class Order_DB_DAO extends AbstractOrderDAO {
         int minPrimaryKeyValue = 10 * 10_000; //group number 10
         int maxPrimaryKeyValue = 10 * 10_000 + 9_999;
 
-        if(number < minPrimaryKeyValue || number > maxPrimaryKeyValue)
+        if (number < minPrimaryKeyValue || number > maxPrimaryKeyValue)
             throw new SQLException("O número do pedido deve estar entre " + minPrimaryKeyValue + " e " + maxPrimaryKeyValue + "!");
     }
 
