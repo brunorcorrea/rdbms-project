@@ -22,7 +22,7 @@ public class CustomerMenu {
                 case 1 -> controller.insertCustomer();
                 case 2 -> controller.getCustomerById();
                 case 3 -> controller.getCustomersByName();
-                case 4 -> controller.deleteCustomer();
+                case 4 -> controller.deleteCustomerAndHisOrders();
                 default -> System.out.println("Opção Inválida.");
             }
         } while (option < 1 || option > 4);

@@ -59,19 +59,19 @@ public class InfoMenu {
                 Este programa foi projetado para facilitar a interação com o banco de dados SI400 e oferece as seguintes funcionalidades:
                                 
                 1. **Gerenciamento de Clientes:**
-                   - Adicione novos clientes e verifique se o ID do cliente está dentro da faixa permitida para o seu grupo.
+                   - Adicione novos clientes.
                    - Consulte clientes pelo ID para visualizar todas as informações de um cliente.
-                   - Consulte clientes pelo nome para encontrar clientes com nomes semelhantes.
+                   - Consulte clientes pelo nome para encontrar clientes com o mesmo nome.
                    - Exclua clientes pelo ID, incluindo a remoção de todos os pedidos associados.
                                 
                 2. **Gerenciamento de Pedidos:**
-                   - Adicione novos pedidos, garantindo que o cliente exista no banco de dados.
+                   - Adicione novos pedidos.
                    - Consulte pedidos pelo número para visualizar os detalhes do pedido.
                    - Exclua pedidos pelo número.
                                 
                 3. **Relatórios:**
                    - Gere relatórios de clientes e pedidos ordenados por identificador ou nome.
-                   - Crie um relatório especial que exibe pedidos de clientes com quebra de seções, mostrando informações detalhadas de cada cliente e seus pedidos.
+                   - Crie um relatório especial que exibe informações detalhadas de cada cliente e seus pedidos.
                                 
                 4. **Informações:**
                    - Acesse esta seção para obter informações adicionais sobre como usar o programa.
