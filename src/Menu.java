@@ -162,20 +162,11 @@ public class Menu { //TODO treat exception when pass a string instead of an inte
             scanner.nextLine();
 
             switch (option) {
-                case 1:
-                    controller.getCustomersOrderedById();
-                    break;
-                case 2:
-                    controller.getCustomersOrderedByName();
-                    break;
-                case 3:
-                    controller.getOrdersOrderedByNumber();
-                    break;
-                case 4:
-                    controller.getOrdersOfCustomersOrderedByCustomerName();
-                    break;
-                default:
-                    System.out.println("Opção Inválida.");
+                case 1 -> controller.getCustomersOrderedById();
+                case 2 -> controller.getCustomersOrderedByName();
+                case 3 -> controller.getOrdersOrderedByNumber();
+                case 4 -> controller.getOrdersOfCustomersOrderedByCustomerName();
+                default -> System.out.println("Opção Inválida.");
             }
 
             clearConsole();
