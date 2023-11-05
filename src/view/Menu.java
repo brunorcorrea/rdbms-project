@@ -41,10 +41,15 @@ public class Menu {
                 case 2 -> orderMenu(controller);
                 case 3 -> reportMenu(controller);
                 case 4 -> infoMenu();
-                case 5 -> System.out.println("Saindo...");
+                case 5 -> closeProgram();
                 default -> System.out.println("Opção Inválida.");
             }
         } while (option != 5);
+    }
+
+    private static void closeProgram() {
+        System.out.println("Saindo...");
+        controller.closeConnection();
     }
 
     static void printDivider() {
