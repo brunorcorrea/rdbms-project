@@ -10,8 +10,8 @@ public class Main {
         if (isDevelopmentProfile(args)) {
             Menu.controller = new Controller(DataBaseType.MEMORY);
         } else {
-            Menu.controller = new Controller(DataBaseType.MARIADB);
             Menu.setDatabaseCredentials();
+            Menu.controller = new Controller(DataBaseType.MARIADB);
         }
 
         Menu.showMainMenu();

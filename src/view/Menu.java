@@ -26,8 +26,6 @@ public class Menu {
 
         System.out.println("Senha: ");
         MariaDBConnection.PASSWORD = scanner.nextLine();
-
-        System.out.println("Credenciais salvas com sucesso!");
     }
 
     public static void showMainMenu() {

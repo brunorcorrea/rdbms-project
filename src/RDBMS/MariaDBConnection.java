@@ -28,6 +28,7 @@ public final class MariaDBConnection {
             }
         } catch (SQLException e) {
             System.err.println("Erro ao se conectar com o banco: " + e.getMessage());
+            System.exit(1);
         }
     }
 
