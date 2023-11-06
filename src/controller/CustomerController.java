@@ -45,7 +45,6 @@ public class CustomerController {
 
     public static void getById(AbstractCustomerDAO customerDAO) {
         try {
-            System.out.println("Insira o ID do cliente: ");
             int id = getCustomerId();
 
             Customer customer = customerDAO.getCustomerById(id);
